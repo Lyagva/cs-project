@@ -81,7 +81,7 @@
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Image VerticalAlignment="Top" HorizontalAlignment="Right" Width="800" Height="400" Stretch="Uniform" Source="/gears.png" Grid.ColumnSpan="2"/>
+                        <Image Source="/menu.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="800" Height="400" Stretch="Uniform" Grid.ColumnSpan="2"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" DockPanel.Dock="Top" Height="160">
                             <Button Margin="10, 15" x:Name="New_gamebutton" Width="165" Content="NEW GAME" Click="refer__newgame" Foreground="#2ecc71" Cursor="ArrowCD"/>
                             <Button Margin="10, 20" x:Name="Creditsbutton" Width="165" Content="CREDITS" Click="refer__showcredits"/>
@@ -178,7 +178,7 @@
                         <!-- Console Output -->
                         <TextBlock x:Name="consoleOutput" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" 
                    Margin="16, 4" VerticalAlignment="Bottom">
-            Hello my friend
+                        Use "help", "-h" or "?" to get some help
                         </TextBlock>
                         <!-- Console Input row grid -->
                         <Grid Grid.Row="1">
@@ -204,7 +204,6 @@
                      Background="#0f151b" Foreground="#229652" BorderBrush="#2ecc71"
                      FontFamily="Lucida Console"
                      MaxLines="1" ToolTip="Text input field" GotFocus="consoleInput_GotFocus" LostFocus="consoleInput_LostFocus">
-                                How r u?
                             </TextBox>
                         </Grid>
                         <!-- Answer Buttons Grid -->
@@ -223,12 +222,6 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Grid.ColumnSpan="3">
-                                Answer1
-                            </Button>
-                            <Button Grid.Column="3" Grid.ColumnSpan="3">
-                                Answer2
-                            </Button>
                         </Grid>
                     </Grid>
                 </TabItem.Content>

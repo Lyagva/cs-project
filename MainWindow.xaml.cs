@@ -23,6 +23,7 @@ namespace CMD
     /// </summary>
     public partial class MainWindow : Window
     {
+        // YES
         //  <--- Data for func(s) --->
 
         //история настроек
@@ -56,7 +57,6 @@ namespace CMD
         public MainWindow()
         {
             InitializeComponent();
-            changePlot(0, 0);
             loadState();
         }
 
@@ -92,7 +92,7 @@ namespace CMD
         // музыка
         public void BackgroundMusic_Start()
         {
-            _backgroundMusic.Open(new Uri(@"C:\Users\SJYTK239\Music\SoundCloud\.Cyberpunk game\Lost streets.wav"));
+            _backgroundMusic.Open(new Uri("music/Rain and you.mp3", UriKind.Relative));
             _backgroundMusic.MediaEnded += new EventHandler(BackgroundMusic_Ended);
             _backgroundMusic.Play();
             settings["musicEnabled"] = "true";
@@ -333,7 +333,7 @@ namespace CMD
         }
         private void loadState()
         {
-            // чтение настроек из .idk
+            // чтение настроек из settings.idk
             Dictionary<string, string> settings = File.ReadAllLines("settings.idk")
                                        .Select(x => x.Replace(" ", "").Split('='))
                                        .ToDictionary(x => x[0], x => x[1]);
@@ -344,15 +344,16 @@ namespace CMD
             clocktxtblock.Content = Convert.ToString(settings["timeLock"]);
 
             // установка CheckBox(s)
-            if (Convert.ToBoolean(settings["fullscreenEnabled"]))
+            if ((Convert.ToBoolean(settings["fullscreenEnabled"]) && WindowState != WindowState.Maximized) ||
+                (!Convert.ToBoolean(settings["fullscreenEnabled"]) && WindowState != WindowState.Normal))
             {
                 switch_fullscreen();
             }
-            if (Convert.ToBoolean(settings["musicEnabled"]))
+            if (Convert.ToBoolean(settings["musicEnabled"]) != music_checker.IsChecked)
             {
                 switch_music(music_checker);
             }
-            if (Convert.ToBoolean(settings["timerEnabled"]))
+            if (Convert.ToBoolean(settings["timerEnabled"]) != timer_checker.IsChecked)
             {
                 switch_timer(timer_checker);
             }
@@ -468,7 +469,7 @@ namespace CMD
         }
         public string operateCommandSettings(List<string> args)
         {
-            if (args.Count < 1 && !new[] { "restart", "default" }.Contains(args[0]))
+            if (args.Count < 1)
             {
                 return "No property provided. Use 'sett -h' for more info";
             }
@@ -511,7 +512,7 @@ namespace CMD
                 property = "font size";
             }
 
-            if (new[] { "music", "audio" }.Contains(property))
+            else if (new[] { "music", "audio" }.Contains(property))
             {
                 // Value check
                 if (!new[] { "true", "false" }.Contains(value))
@@ -526,7 +527,7 @@ namespace CMD
                 property = "music";
             }
 
-            if (new[] { "volume" }.Contains(property))
+            else if (new[] { "volume" }.Contains(property))
             {
                 // Value check
                 if (!int.TryParse(value, out _))
@@ -542,7 +543,7 @@ namespace CMD
                 property = "volume";
             }
 
-            if (new[] { "fullscreen" }.Contains(property))
+            else if (new[] { "fullscreen" }.Contains(property))
             {
                 // Value check
                 if (!new[] { "true", "false" }.Contains(value))
@@ -561,16 +562,14 @@ namespace CMD
                 property = "fullscreen";
             }
 
-            if (new[] { "restart" }.Contains(property))
+            else if (new[] { "restart" }.Contains(property))
             {
-
-                settings["chapter"] = "0";
-                settings["id"] = "0";
-                loadState();
+                changePlot(0, 0);
                 property = "restart";
+                return "";
             }
 
-            if (new[] { "default" }.Contains(property))
+            else if (new[] { "default" }.Contains(property))
             {
                 string chapter = settings["chapter"];
                 string id = settings["id"];
@@ -585,8 +584,14 @@ namespace CMD
                     ["chapter"] = chapter,
                     ["id"] = id
                 };
+                saveState();
                 loadState();
                 property = "default";
+            }
+
+            else
+            {
+                return "Invalid property [" + property + "]. Use 'sett -h' for more info";
             }
 
             return "Successfully changed [" + property + "] to [" + value + "]";
@@ -595,8 +600,9 @@ namespace CMD
         {
             return
                 "Available commands:" +
+                "\n\t[help, -h, ?]\tShows this message" +
                 "\n\t[settings; sett]\tedits game properties. Use 'sett -h' for more info" +
-                "\n\t[act; action]\temulates action button press. use 'act <number>' to use" +
+                "\n\t[act; action]\temulates action button press. Use 'act <number>' to use. Count starts from 0" +
                 "\n\t[cls; clear]\tclears console";
         }
         public string operateCommandAct(List<string> args)
@@ -607,9 +613,9 @@ namespace CMD
                 return "Invalid action number";
             }
             int num = Convert.ToInt32(value);
-            if (num < 0 || num > actions.Count)
+            if (num < 0 || num >= actions.Count)
             {
-                return "Too big number. Number shoud be in range [0; " + Convert.ToString(actions.Count) + "]";
+                return "Number out of range. Number shoud be in range [0; " + Convert.ToString(actions.Count) + "]";
             }
             changePlot(actions[num][0], actions[num][1]);
 
@@ -621,7 +627,7 @@ namespace CMD
             if (e.Key == Key.Return && consoleInput.IsFocused)
             {
                 string inputLine = consoleInput.Text;
-                string text = "<<<\t" + operateCommand(inputLine);
+                string text = operateCommand(inputLine);
                 addConsoleOutput(text);
 
                 inputHistory.Insert(0, inputLine);
@@ -648,9 +654,5 @@ namespace CMD
         {
             saveState();
         }
-
-
-
-
     }
 }
