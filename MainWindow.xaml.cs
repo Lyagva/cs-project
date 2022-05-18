@@ -18,6 +18,7 @@ using System.Diagnostics;
 
 namespace CMD
 {
+    // Hi
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
