@@ -1,0 +1,5 @@
+{MOOD} 1
+{ACTION} 0 1 Chapter 0 ID 1
+{ACTION} 0 2 Chapter 0 ID 2
+
+{TEXT} <Dev>\tHeeeyyy, duuudeeee! How is goinggg?

@@ -1,0 +1,8 @@
+volume = 50
+fontSize = 18
+timeLock = 00:00:00
+timerEnabled = true
+musicEnabled = true
+fullscreenEnabled = false
+chapter = 0
+id = 0
