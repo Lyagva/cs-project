@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
+//using HelpTimer;
 
 namespace CMD
 {
@@ -48,7 +49,9 @@ namespace CMD
 
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
 
-        // секундомер
+        // секундомер новый
+        //OurTimer TotalStopWatcher;
+        // секундомер старый
         DispatcherTimer dt = new DispatcherTimer();
         Stopwatch sw = new Stopwatch();
         string currentTime = string.Empty;
