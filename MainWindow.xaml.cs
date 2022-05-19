@@ -18,13 +18,11 @@ using System.Diagnostics;
 
 namespace CMD
 {
-    // Hi
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        // YES
         //  <--- Data for func(s) --->
 
         //история настроек
@@ -110,7 +108,7 @@ namespace CMD
             settings["musicEnabled"] = "false";
         }
 
-        // секундомер
+        // секундомер - старый
         public void Timer_Start()
         {
             dt.Tick += new EventHandler(dt_Tick);
@@ -201,7 +199,10 @@ namespace CMD
         }
         private void refer__showcredits(object sender, RoutedEventArgs e)
         {
+            CreditsWindow window = new CreditsWindow();
 
+            window.Owner = this;
+            window.Show();
         }
         private void refer__exit(object sender, RoutedEventArgs e)
         {
@@ -216,10 +217,6 @@ namespace CMD
         private void refer__fullscreen(object sender, RoutedEventArgs e)
         {
             switch_fullscreen();
-        }
-        private void refer__timelockch(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            
         }
         private void refer__fontsizech(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -435,7 +432,7 @@ namespace CMD
             return Math.Min(Math.Max(value, minValue), maxValue);
         }
 
-        // операции в cmd - подсказки для ввода
+        // работа с командной строкой
         public string operateCommand(string text)
         {
             text = text.ToLower();
@@ -622,7 +619,7 @@ namespace CMD
 
             return "";
         }
-        // Обработчик нажатий
+        // Обработчик преднажатий
         private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return && consoleInput.IsFocused)

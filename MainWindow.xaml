@@ -116,15 +116,14 @@
                                 <RowDefinition Height="0.4*"/>
                             </Grid.RowDefinitions>
                             <GroupBox HorizontalAlignment="Center" Grid.Row="1" Width="190" Height="90" VerticalAlignment="Center" Header="Volume">
-                                <Slider Name="volume_slider"  HorizontalAlignment="Center" Orientation="Horizontal" Width="120" Height="20" Grid.Row="2" VerticalAlignment="Center" Minimum="0" Maximum="100" Value="60" ValueChanged="refer__volumech" Cursor="Hand"></Slider>
+                                <Slider Name="volume_slider"  HorizontalAlignment="Center" Orientation="Horizontal" Width="120" Height="20" Grid.Row="2" VerticalAlignment="Center" Minimum="0" Maximum="100" Value="60" ValueChanged="refer__volumech" Cursor="Hand"/>
                             </GroupBox>
                             <GroupBox HorizontalAlignment="Center" Grid.Row="2" Width="190" Height="90" VerticalAlignment="Center" Header="Time in game">
                                 <Label x:Name="clocktxtblock" HorizontalAlignment="Center" Width="150" Height="30" VerticalAlignment="Center"/>
                             </GroupBox>
                             <GroupBox HorizontalAlignment="Center" Grid.Row="3" Width="190" Height="90" VerticalAlignment="Center" Header="Font Size">
-                                <Slider Name="fontSize_slider" HorizontalAlignment="Center" Orientation="Horizontal" Width="120" Height="20" VerticalAlignment="Center" Minimum="10" Maximum="19" Value="14" ValueChanged="refer__fontsizech" Cursor="Hand"></Slider>
+                                <Slider Name="fontSize_slider" HorizontalAlignment="Center" Orientation="Horizontal" Width="120" Height="20" VerticalAlignment="Center" Minimum="10" Maximum="19" Value="14" ValueChanged="refer__fontsizech" Cursor="Hand"/>
                             </GroupBox>
-                            <!-- <Slider Name="timeLock_slider" HorizontalAlignment="Center" Orientation="Horizontal" Width="120" Height="20" Grid.Row="4" VerticalAlignment="Center" Minimum="1" Maximum="12" Value="2" ValueChanged="refer__timelockch" Cursor="Hand"></Slider> -->
                         </Grid>
                         <Grid Grid.Column="2" Name="settings_right_grid">
                             <Grid.RowDefinitions>
