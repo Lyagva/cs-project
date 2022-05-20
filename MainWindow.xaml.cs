@@ -50,6 +50,7 @@ namespace intruder
 
         // музыка
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
+        MediaPlayer sound = new MediaPlayer();
 
         // секундомер
         string currentTime = string.Empty;
@@ -80,7 +81,7 @@ namespace intruder
         {
             Button obj = (Button)sender;
             obj.Foreground = HexToColor("#2ecc71");
-            if (obj == New_gamebutton)
+            if (obj == Newgamebutton)
             {
                 obj.Foreground = HexToColor("#FFFFFF");
             }
@@ -89,7 +90,7 @@ namespace intruder
         {
             Button obj = (Button)sender;
             obj.Foreground = HexToColor("#229652");
-            if (obj == New_gamebutton)
+            if (obj == Newgamebutton)
             {
                 obj.Foreground = HexToColor("#2ecc71");
             }
@@ -115,34 +116,6 @@ namespace intruder
             settings["musicEnabled"] = "false";
         }
 
-        /*/ секундомер - старый
-        public void Timer_Start()
-        {
-            dt.Tick += new EventHandler(dt_Tick);
-            dt.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            //dt.Interval = new TimeSpan(Convert.ToInt64(TimeSpan.Parse(settings["timeLock"])));
-            sw.Start();
-            dt.Start();
-            settings["timerEnabled"] = "true";
-        }
-        public void Timer_Stop()
-        {
-            sw.Stop();
-            dt.Stop();
-            settings["timerEnabled"] = "true";
-        }
-        void dt_Tick(object sender, EventArgs e)
-        {
-            if (timer_checker.IsChecked == true)
-            {
-                TimeSpan ts = sw.Elapsed;
-                currentTime = String.Format("{0:00}:{1:00}:{2:00}",
-                ts.Hours, ts.Minutes, ts.Seconds);
-                clocktxtblock.Content = currentTime;
-                settings["timeLock"] = currentTime.ToString();
-            }
-        }
-        */
         // новый секундомер 
         public void Timer_Start()
         {
@@ -214,13 +187,13 @@ namespace intruder
             {
                 game_tab.Visibility = Visibility.Visible;
                 main_game.Visibility = Visibility.Visible;
-                New_gamebutton.Content = "CLOSE";
+                Newgamebutton.Content = "CLOSE";
             }
             else
             {
                 game_tab.Visibility = Visibility.Hidden;
                 main_game.Visibility = Visibility.Hidden;
-                New_gamebutton.Content = "CONTINUE";
+                Newgamebutton.Content = "CONTINUE";
             }
         }
         private void refer__showcredits(object sender, RoutedEventArgs e)
@@ -684,6 +657,12 @@ namespace intruder
             settings["totalSpendTime"] = Convert.ToString(clocktxtblock.Content);
             //settings["totalSpendTime"] = currentTime;
             saveState();
+        }
+
+        private void gra_mouseenter(object sender, MouseEventArgs e)
+        {
+            sound.Open(new Uri("music/gta-san-andreas-menu-sound.mp3", UriKind.Relative));
+            sound.Play();
         }
     }
 }

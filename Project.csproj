@@ -105,5 +105,14 @@
   <ItemGroup>
     <Resource Include="menu.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="disc_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="yut_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="vk_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
