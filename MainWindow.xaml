@@ -82,14 +82,14 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="6*"/>
-                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Vertical" DockPanel.Dock="Top" Height="222" Grid.ColumnSpan="1" Grid.RowSpan="1">
                             <Button Margin="10, 15" x:Name="New_gamebutton" Width="165" Content="NEW GAME" Click="refer__newgame" Foreground="#2ecc71" Cursor="ArrowCD"/>
                             <Button Margin="10, 20" x:Name="Creditsbutton" Width="165" Content="CREDITS" Click="refer__showcredits"/>
                             <Button Margin="10, 15" x:Name="Exitbutton" Width="165" Content="EXIT?" Click="refer__exit" Cursor="No"/>
                         </StackPanel>
-                        <Image Source="/menu.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="800" Height="400" Stretch="Uniform" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
+                        <Image Source="/menu.png" VerticalAlignment="Center" HorizontalAlignment="Right" Width="800" Height="400" Stretch="Uniform" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
                         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.RowSpan="2">
                             <Ellipse></Ellipse>
                             <Ellipse></Ellipse>
