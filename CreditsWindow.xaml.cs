@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 
-namespace CMD
+namespace intruder
 {
     /// <summary>
     /// Логика взаимодействия для CreditsWindow.xaml

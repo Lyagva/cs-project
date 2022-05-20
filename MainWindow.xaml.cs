@@ -15,9 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
-//using HelpTimer;
+using Customtimer;
 
-namespace CMD
+namespace intruder
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -31,7 +31,7 @@ namespace CMD
         { 
           ["volume"] = "50",
           ["fontSize"] = "18",
-          ["timeLock"] = "2",
+          ["totalSpendTime"] = "00:00:00",
           ["timerEnabled"] = "false",
           ["musicEnabled"] = "true",
           ["fullscreenEnabled"] = "false",
@@ -39,26 +39,30 @@ namespace CMD
           ["id"] = "0"
         };
 
-        //история ввода
-        List<string> inputHistory = new List<string> { };
+        // история ввода
+        List<string> inputHistory = new List<string> {};
         int inputHistoryPointer = 0;
 
+        // подгрузка истории
         int currentMood = 0;
         List<int[]> actions = new List<int[]>();
         List<string> actionsContent = new List<string>();
 
+        // музыка
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
 
-        // секундомер новый
-        //OurTimer TotalStopWatcher;
-        // секундомер старый
-        DispatcherTimer dt = new DispatcherTimer();
-        Stopwatch sw = new Stopwatch();
+        // секундомер
         string currentTime = string.Empty;
+        OurTimer TotalStopWatcher = new OurTimer();
+        DispatcherTimer SpecTimer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            SpecTimer.Interval = new TimeSpan(0, 0, 1);
+            SpecTimer.Tick += Timer_Tick;
+
             loadState();
         }
 
@@ -111,7 +115,7 @@ namespace CMD
             settings["musicEnabled"] = "false";
         }
 
-        // секундомер - старый
+        /*/ секундомер - старый
         public void Timer_Start()
         {
             dt.Tick += new EventHandler(dt_Tick);
@@ -137,6 +141,25 @@ namespace CMD
                 clocktxtblock.Content = currentTime;
                 settings["timeLock"] = currentTime.ToString();
             }
+        }
+        */
+        // новый секундомер 
+        public void Timer_Start()
+        {
+            SpecTimer.Start();
+            settings["timerEnabled"] = "true";
+        }
+        public void Timer_Stop()
+        {
+            SpecTimer.Stop();
+            settings["timerEnabled"] = "false";
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            TotalStopWatcher.incSeconds();
+            currentTime = String.Format("{0:00}:{1:00}:{2:00}", 
+            TotalStopWatcher.getHours(), TotalStopWatcher.getMinutes(), TotalStopWatcher.getSeconds());
+            clocktxtblock.Content = currentTime;
         }
 
         // чтение переходов
@@ -320,7 +343,7 @@ namespace CMD
             }
         }
 
-        // loader and saver of prog
+        // loader and saver of prog in .idk file
         private void saveState()
         {
             using (StreamWriter writer = new StreamWriter("settings.idk"))
@@ -342,7 +365,12 @@ namespace CMD
             // установка Slider(s)
             volume_slider.Value = Convert.ToDouble(settings["volume"]);
             fontSize_slider.Value = Convert.ToDouble(settings["fontSize"]);
-            clocktxtblock.Content = Convert.ToString(settings["timeLock"]);
+
+            // установка времени
+            clocktxtblock.Content = Convert.ToString(settings["totalSpendTime"]);
+            String[] paths = settings["totalSpendTime"].Split(':');
+            Int64 arg = Convert.ToInt64(paths[0]) * 3600 + Convert.ToInt64(paths[1]) * 60 + Convert.ToInt64(paths[2]);
+            TotalStopWatcher.setSeconds(arg);
 
             // установка CheckBox(s)
             if ((Convert.ToBoolean(settings["fullscreenEnabled"]) && WindowState != WindowState.Maximized) ||
@@ -653,6 +681,8 @@ namespace CMD
         // Обработчик окна
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            settings["totalSpendTime"] = Convert.ToString(clocktxtblock.Content);
+            //settings["totalSpendTime"] = currentTime;
             saveState();
         }
     }
