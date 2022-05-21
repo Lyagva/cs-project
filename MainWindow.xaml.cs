@@ -38,6 +38,7 @@ namespace intruder
           ["chapter"] = "0",
           ["id"] = "0"
         };
+        double fullscreenFontSizeMult = 1.5;
 
         // история ввода
         List<string> inputHistory = new List<string> {};
@@ -60,6 +61,8 @@ namespace intruder
         public MainWindow()
         {
             InitializeComponent();
+
+            sound.Open(new Uri("music/menu_hover.mp3", UriKind.Relative));
 
             SpecTimer.Interval = new TimeSpan(0, 0, 1);
             SpecTimer.Tick += Timer_Tick;
@@ -95,11 +98,16 @@ namespace intruder
                 obj.Foreground = HexToColor("#2ecc71");
             }
         }
+        private void menu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            sound.Stop();
+            sound.Play();
+        }
 
         // музыка
         public void BackgroundMusic_Start()
         {
-            _backgroundMusic.Open(new Uri("music/Rain and you.mp3", UriKind.Relative));
+            _backgroundMusic.Open(new Uri("music/Lost streets.mp3", UriKind.Relative));
             _backgroundMusic.MediaEnded += new EventHandler(BackgroundMusic_Ended);
             _backgroundMusic.Play();
             settings["musicEnabled"] = "true";
@@ -167,7 +175,7 @@ namespace intruder
                 else if (line[0] == "{TEXT}")
                 {
                     line.RemoveAt(0);
-                    addConsoleOutput(string.Join(" ", line));
+                    addConsoleOutput(string.Join(" ", line).Replace("~n", "\n").Replace("~t", "\t"));
                 }
 
             }
@@ -221,6 +229,10 @@ namespace intruder
         {
             var fontsizeSlider = sender as Slider;
             Application.Current.MainWindow.FontSize = (double)fontsizeSlider.Value;
+            if (WindowState == WindowState.Maximized)
+            {
+                Application.Current.MainWindow.FontSize *= fullscreenFontSizeMult;
+            }
 
             settings["fontSize"] = ((double)fontsizeSlider.Value).ToString();
         }
@@ -623,10 +635,10 @@ namespace intruder
 
             return "";
         }
-        // Обработчик преднажатий
+        // Обработчик нажатий
         private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && consoleInput.IsFocused)
+            if (e.Key == Key.Return && consoleInput.IsFocused && consoleInput.Text != "")
             {
                 string inputLine = consoleInput.Text;
                 string text = operateCommand(inputLine);
@@ -659,10 +671,6 @@ namespace intruder
             saveState();
         }
 
-        private void gra_mouseenter(object sender, MouseEventArgs e)
-        {
-            sound.Open(new Uri("music/gta-san-andreas-menu-sound.mp3", UriKind.Relative));
-            sound.Play();
-        }
+        
     }
 }

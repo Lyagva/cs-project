@@ -1,0 +1,6 @@
+{ACTION} 0 7 Next Note
+
+{TEXT} ~n==== Day 4 ====
+{TEXT} <???> I won't say you who am I! I'm not so stupid as you!
+{TEXT} <Mylar> Oh, just say you my name! Or... 
+{TEXT} <Mylar> ...I WILL SMACK YOU TO THE WALL!

@@ -1,8 +1,8 @@
-volume = 100
+volume = 50
 fontSize = 19
-totalSpendTime = 00:21:24
-timerEnabled = false
+totalSpendTime = 00:27:02
+timerEnabled = true
 musicEnabled = true
 fullscreenEnabled = true
 chapter = 0
-id = 0
+id = 2

@@ -1,0 +1,5 @@
+{ACTION} 0 4 Day 0
+
+{TEXT} <Mylar> Ghhhm... Well, I'm Mylar and this is my journal
+{TEXT} <Mylar> I'm around 16 years old. (i don't know exacly)
+{TEXT} <Mylar> I live in really poor area, so I'm workin' as scavenger

@@ -1,0 +1,5 @@
+{ACTION} 0 8 Next note
+
+{TEXT} <???> Haha! You won't do tha-a-a... HEY! WAIT! Ok, I will tell you my name!
+{TEXT} <???> My serial number is... Um... Something like... "SR_n206"
+{TEXT} <Intruder> But everyone called me "Intruder". Are you happy now? Put me on the ground, you, leather bastard!

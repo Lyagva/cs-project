@@ -1,2 +1,4 @@
-{TEXT} not uuYep
-{ACTION} 0 0 Return
+{ACTION} 0 3 Next Note
+
+{TEXT} ~n==== DAY -1 ====
+{TEXT} <???> Emm, h-hello... Is this thing works?.. Ok, it seems like it's recording me...
