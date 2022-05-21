@@ -1,0 +1,6 @@
+{ACTION} 0 6 Day 4
+
+{TEXT} ~n==== Day 3 ====
+{TEXT} <Mylar> Oh, ****! This stupid robot is still "sleeping"
+{TEXT} <Mylar> Maybe I should punch it...
+{TEXT} <Mylar> No... I was joking... I, probably, shouldn't do this...

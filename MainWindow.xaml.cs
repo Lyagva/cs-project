@@ -15,16 +15,15 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
+using Customtimer;
 
-namespace CMD
+namespace intruder
 {
-    // Hi
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        // YES
         //  <--- Data for func(s) --->
 
         //история настроек
@@ -32,32 +31,42 @@ namespace CMD
         { 
           ["volume"] = "50",
           ["fontSize"] = "18",
-          ["timeLock"] = "2",
+          ["totalSpendTime"] = "00:00:00",
           ["timerEnabled"] = "false",
           ["musicEnabled"] = "true",
           ["fullscreenEnabled"] = "false",
           ["chapter"] = "0",
           ["id"] = "0"
         };
+        double fullscreenFontSizeMult = 1.5;
 
-        //история ввода
-        List<string> inputHistory = new List<string> { };
+        // история ввода
+        List<string> inputHistory = new List<string> {};
         int inputHistoryPointer = 0;
 
+        // подгрузка истории
         int currentMood = 0;
         List<int[]> actions = new List<int[]>();
         List<string> actionsContent = new List<string>();
 
+        // музыка
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
+        MediaPlayer sound = new MediaPlayer();
 
         // секундомер
-        DispatcherTimer dt = new DispatcherTimer();
-        Stopwatch sw = new Stopwatch();
         string currentTime = string.Empty;
+        OurTimer TotalStopWatcher = new OurTimer();
+        DispatcherTimer SpecTimer = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            sound.Open(new Uri("music/menu_hover.mp3", UriKind.Relative));
+
+            SpecTimer.Interval = new TimeSpan(0, 0, 1);
+            SpecTimer.Tick += Timer_Tick;
+
             loadState();
         }
 
@@ -75,7 +84,7 @@ namespace CMD
         {
             Button obj = (Button)sender;
             obj.Foreground = HexToColor("#2ecc71");
-            if (obj == New_gamebutton)
+            if (obj == Newgamebutton)
             {
                 obj.Foreground = HexToColor("#FFFFFF");
             }
@@ -84,16 +93,21 @@ namespace CMD
         {
             Button obj = (Button)sender;
             obj.Foreground = HexToColor("#229652");
-            if (obj == New_gamebutton)
+            if (obj == Newgamebutton)
             {
                 obj.Foreground = HexToColor("#2ecc71");
             }
+        }
+        private void menu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            sound.Stop();
+            sound.Play();
         }
 
         // музыка
         public void BackgroundMusic_Start()
         {
-            _backgroundMusic.Open(new Uri("music/Rain and you.mp3", UriKind.Relative));
+            _backgroundMusic.Open(new Uri("music/Lost streets.mp3", UriKind.Relative));
             _backgroundMusic.MediaEnded += new EventHandler(BackgroundMusic_Ended);
             _backgroundMusic.Play();
             settings["musicEnabled"] = "true";
@@ -110,32 +124,23 @@ namespace CMD
             settings["musicEnabled"] = "false";
         }
 
-        // секундомер
+        // новый секундомер 
         public void Timer_Start()
         {
-            dt.Tick += new EventHandler(dt_Tick);
-            dt.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            //dt.Interval = new TimeSpan(Convert.ToInt64(TimeSpan.Parse(settings["timeLock"])));
-            sw.Start();
-            dt.Start();
+            SpecTimer.Start();
             settings["timerEnabled"] = "true";
         }
         public void Timer_Stop()
         {
-            sw.Stop();
-            dt.Stop();
-            settings["timerEnabled"] = "true";
+            SpecTimer.Stop();
+            settings["timerEnabled"] = "false";
         }
-        void dt_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            if (timer_checker.IsChecked == true)
-            {
-                TimeSpan ts = sw.Elapsed;
-                currentTime = String.Format("{0:00}:{1:00}:{2:00}",
-                ts.Hours, ts.Minutes, ts.Seconds);
-                clocktxtblock.Content = currentTime;
-                settings["timeLock"] = currentTime.ToString();
-            }
+            TotalStopWatcher.incSeconds();
+            currentTime = String.Format("{0:00}:{1:00}:{2:00}", 
+            TotalStopWatcher.getHours(), TotalStopWatcher.getMinutes(), TotalStopWatcher.getSeconds());
+            clocktxtblock.Content = currentTime;
         }
 
         // чтение переходов
@@ -170,7 +175,7 @@ namespace CMD
                 else if (line[0] == "{TEXT}")
                 {
                     line.RemoveAt(0);
-                    addConsoleOutput(string.Join(" ", line));
+                    addConsoleOutput(string.Join(" ", line).Replace("~n", "\n").Replace("~t", "\t"));
                 }
 
             }
@@ -190,18 +195,21 @@ namespace CMD
             {
                 game_tab.Visibility = Visibility.Visible;
                 main_game.Visibility = Visibility.Visible;
-                New_gamebutton.Content = "CLOSE";
+                Newgamebutton.Content = "CLOSE";
             }
             else
             {
                 game_tab.Visibility = Visibility.Hidden;
                 main_game.Visibility = Visibility.Hidden;
-                New_gamebutton.Content = "CONTINUE";
+                Newgamebutton.Content = "CONTINUE";
             }
         }
         private void refer__showcredits(object sender, RoutedEventArgs e)
         {
+            CreditsWindow window = new CreditsWindow();
 
+            window.Owner = this;
+            window.Show();
         }
         private void refer__exit(object sender, RoutedEventArgs e)
         {
@@ -217,14 +225,14 @@ namespace CMD
         {
             switch_fullscreen();
         }
-        private void refer__timelockch(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            
-        }
         private void refer__fontsizech(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var fontsizeSlider = sender as Slider;
             Application.Current.MainWindow.FontSize = (double)fontsizeSlider.Value;
+            if (WindowState == WindowState.Maximized)
+            {
+                Application.Current.MainWindow.FontSize *= fullscreenFontSizeMult;
+            }
 
             settings["fontSize"] = ((double)fontsizeSlider.Value).ToString();
         }
@@ -320,7 +328,7 @@ namespace CMD
             }
         }
 
-        // loader and saver of prog
+        // loader and saver of prog in .idk file
         private void saveState()
         {
             using (StreamWriter writer = new StreamWriter("settings.idk"))
@@ -342,7 +350,12 @@ namespace CMD
             // установка Slider(s)
             volume_slider.Value = Convert.ToDouble(settings["volume"]);
             fontSize_slider.Value = Convert.ToDouble(settings["fontSize"]);
-            clocktxtblock.Content = Convert.ToString(settings["timeLock"]);
+
+            // установка времени
+            clocktxtblock.Content = Convert.ToString(settings["totalSpendTime"]);
+            String[] paths = settings["totalSpendTime"].Split(':');
+            Int64 arg = Convert.ToInt64(paths[0]) * 3600 + Convert.ToInt64(paths[1]) * 60 + Convert.ToInt64(paths[2]);
+            TotalStopWatcher.setSeconds(arg);
 
             // установка CheckBox(s)
             if ((Convert.ToBoolean(settings["fullscreenEnabled"]) && WindowState != WindowState.Maximized) ||
@@ -435,7 +448,7 @@ namespace CMD
             return Math.Min(Math.Max(value, minValue), maxValue);
         }
 
-        // операции в cmd - подсказки для ввода
+        // работа с командной строкой
         public string operateCommand(string text)
         {
             text = text.ToLower();
@@ -625,7 +638,7 @@ namespace CMD
         // Обработчик нажатий
         private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && consoleInput.IsFocused)
+            if (e.Key == Key.Return && consoleInput.IsFocused && consoleInput.Text != "")
             {
                 string inputLine = consoleInput.Text;
                 string text = operateCommand(inputLine);
@@ -653,7 +666,11 @@ namespace CMD
         // Обработчик окна
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            settings["totalSpendTime"] = Convert.ToString(clocktxtblock.Content);
+            //settings["totalSpendTime"] = currentTime;
             saveState();
         }
+
+        
     }
 }

@@ -1,0 +1,6 @@
+{ACTION} 0 9 Next note
+
+{TEXT} <Mylar> Ok, thanks. Now tell me about you, so I won't sell you.
+{TEXT} <Intruder> Emmmm... Ohhh... (i shouldn't do that, but...)
+{TEXT} <Intruder> Well, I'm cyborg. I was made in secret lab to control all over the world.
+{TEXT} <Intruder> I can take root of almost all gadgets in our world

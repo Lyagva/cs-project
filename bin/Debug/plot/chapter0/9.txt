@@ -1,0 +1,7 @@
+{ACTION} 0 10 Next note
+
+{TEXT} <Mylar> And you're not in "secret lab" NOW?
+{TEXT} <Intruder> I escaped...
+{TEXT} <Mylar> Ok. Well... Why don't you killed all people, if you can?
+{TEXT} <Intruder> Almost all of my entrails was melted, when I escaped from "prison" and I wa..
+{TEXT} <Mylar> ...Want me to help you recovering. What I'll get?

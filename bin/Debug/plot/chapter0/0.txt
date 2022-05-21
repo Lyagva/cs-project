@@ -1,5 +1,4 @@
 {MOOD} 1
-{ACTION} 0 1 Chapter 0 ID 1
-{ACTION} 0 2 Chapter 0 ID 2
-
-{TEXT} <Dev>\tHeeeyyy, duuudeeee! How is goinggg?
+{ACTION} 0 1 Next
+{TEXT} In 1982 scientists & programmers invented new way of calculations, but because of that, transistor was never invented and computers still look like in 80s-90s, but they take less space.~n
+{TEXT} After accelerating calculations, following science spheres like: cybernethics, androids and some others started started evolving much faster and world entered new era - era of corporations.

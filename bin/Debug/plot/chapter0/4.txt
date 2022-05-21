@@ -1,0 +1,6 @@
+{ACTION} 0 5 Day 3
+
+{TEXT} ~n==== Day 0 ====
+{TEXT} <Mylar> Today I've found really strange cyber-organism
+{TEXT} <Mylar> It felt from higher levels of city and I think it's pretty expensive
+{TEXT} <Mylar> But I should be sure it won't cause me any problems after selling, so I'll wait till it wake

@@ -1,2 +1,6 @@
-{TEXT} uuYep
-{ACTION} 0 0 Return
+{ACTION} 0 2 Next
+
+{TEXT} And so, new corporations meet our world:
+{TEXT} ~tMilTech corp - invents and creates new weapons, battle robots and androids. Also, provides weapons for the whole world
+{TEXT} ~tFlyer ind - very old company, that invented repulsors and flying means of transport
+{TEXT} ~tBioLife inc - mysterious company responsible for creating human like robots - androids
