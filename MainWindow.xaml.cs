@@ -38,7 +38,6 @@ namespace intruder
           ["chapter"] = "0",
           ["id"] = "0"
         };
-        double fullscreenFontSizeMult = 1.5;
 
         // история ввода
         List<string> inputHistory = new List<string> {};
@@ -51,18 +50,23 @@ namespace intruder
 
         // музыка
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
-        MediaPlayer sound = new MediaPlayer();
+        MediaPlayer menusound = new MediaPlayer();
+        MediaPlayer confimsound = new MediaPlayer();
 
         // секундомер
         string currentTime = string.Empty;
         OurTimer TotalStopWatcher = new OurTimer();
         DispatcherTimer SpecTimer = new DispatcherTimer();
 
+        // экран
+        double FontSizeMult = 1.28;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            sound.Open(new Uri("music/menu_hover.mp3", UriKind.Relative));
+            menusound.Open(new Uri("music/menu_hover.mp3", UriKind.Relative));
+            confimsound.Open(new Uri("music/settings_set.mp3", UriKind.Relative));
 
             SpecTimer.Interval = new TimeSpan(0, 0, 1);
             SpecTimer.Tick += Timer_Tick;
@@ -100,8 +104,13 @@ namespace intruder
         }
         private void menu_MouseEnter(object sender, MouseEventArgs e)
         {
-            sound.Stop();
-            sound.Play();
+            menusound.Stop();
+            menusound.Play();
+        }
+        private void confim_MouseClick()
+        {
+            confimsound.Stop();
+            confimsound.Play();
         }
 
         // музыка
@@ -124,7 +133,7 @@ namespace intruder
             settings["musicEnabled"] = "false";
         }
 
-        // новый секундомер 
+        // секундомер 
         public void Timer_Start()
         {
             SpecTimer.Start();
@@ -216,7 +225,23 @@ namespace intruder
             this.Close();
         }
 
-
+        // borders` fix of GroupBox
+        private void screen__fix(bool arg)
+        {
+            /*
+            Style newstyle = new Style { TargetType = typeof(GroupBox) };
+            if (arg)
+            {
+                newstyle.Setters.Add(new Setter(BorderThicknessProperty, new Thickness(1)));
+            }
+            else
+            {
+                newstyle.Setters.Add(new Setter(BorderThicknessProperty, new Thickness(0.8)));
+                
+            }
+            Application.Current.Resources["_GB_style"] = newstyle;
+            */
+        }
 
         //  <--- Settings tab comands and func(s) --->
 
@@ -231,7 +256,7 @@ namespace intruder
             Application.Current.MainWindow.FontSize = (double)fontsizeSlider.Value;
             if (WindowState == WindowState.Maximized)
             {
-                Application.Current.MainWindow.FontSize *= fullscreenFontSizeMult;
+                Application.Current.MainWindow.FontSize *= FontSizeMult;
             }
 
             settings["fontSize"] = ((double)fontsizeSlider.Value).ToString();
@@ -259,6 +284,7 @@ namespace intruder
                 BackgroundMusic_Stop();
                 settings["musicEnabled"] = "false";
             }
+            confim_MouseClick();
         }
         private void refer__timelocker(object sender, RoutedEventArgs e)
         {
@@ -273,6 +299,7 @@ namespace intruder
                 Timer_Stop();
                 settings["timerEnabled"] = "false";
             }
+            confim_MouseClick();
         }
 
         // switchers for loading prog with saves
@@ -288,6 +315,9 @@ namespace intruder
                 settings_left_grid.RowDefinitions[4].Height = new GridLength(3, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[0].Height = new GridLength(3, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[6].Height = new GridLength(3, GridUnitType.Star);
+                Application.Current.MainWindow.FontSize *= FontSizeMult;
+
+                screen__fix(true);
             }
             else
             {
@@ -299,7 +329,11 @@ namespace intruder
                 settings_left_grid.RowDefinitions[4].Height = new GridLength(0.4, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[0].Height = new GridLength(0.5, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[6].Height = new GridLength(0.5, GridUnitType.Star);
+                Application.Current.MainWindow.FontSize /= FontSizeMult;
+
+                screen__fix(false);
             }
+            confim_MouseClick();
         }
         public void switch_music(CheckBox arg)
         {
@@ -313,6 +347,7 @@ namespace intruder
                 arg.IsChecked = true;
                 BackgroundMusic_Start();
             }
+            confim_MouseClick();
         }
         public void switch_timer(CheckBox arg)
         {
@@ -326,6 +361,7 @@ namespace intruder
                 arg.IsChecked = true;
                 Timer_Start();
             }
+            confim_MouseClick();
         }
 
         // loader and saver of prog in .idk file
@@ -380,9 +416,6 @@ namespace intruder
 
         //  <--- Game tab comands and func(s) --->
 
-
-
-
         //перезапись кнопок
         public void setButtonsCount(int count, List<string> actionsContent)
         {
@@ -404,8 +437,6 @@ namespace intruder
                 actionButtonsGrid.Children.Add(tmpBtn);
             }
         }
-
-
 
         // фокусировка консоли
         private void consoleInput_GotFocus(object sender, RoutedEventArgs e)
