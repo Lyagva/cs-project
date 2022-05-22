@@ -20,11 +20,10 @@
             <Setter Property="FontFamily" Value="Lucida Console"/>
             <Setter Property="Foreground" Value="#2ecc71"/>
         </Style>
-        <!-- x:Key="_GB_style"  -->
         <Style TargetType="GroupBox">
             <Setter Property="FontFamily" Value="Lucida Console"/>
             <Setter Property="Foreground" Value="#2ecc71"/>
-            <Setter Property="BorderThickness" Value="1.2"/>
+            <Setter Property="BorderThickness" Value="0.4"/>
             <Setter Property="BorderBrush" Value="Gray"/>
         </Style>
         <Style TargetType="Button">
@@ -34,11 +33,11 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Margin" Value="16, 4"/>
             <Setter Property="Padding" Value="16, 4"/>
-
+            <Setter Property="Cursor" Value="Hand"/>
+            
             <EventSetter Event="MouseEnter" Handler="Obj_MouseEnter"/>
             <EventSetter Event="MouseLeave" Handler="Obj_MouseLeave"/>
 
-            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -85,9 +84,9 @@
                             <RowDefinition Height="1.3*"/>
                         </Grid.RowDefinitions>
                         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Vertical" DockPanel.Dock="Top" Height="222">
-                            <Button Margin="10, 10" x:Name="Newgamebutton" Width="165" Content="NEW GAME" Click="refer__newgame" MouseEnter="menu_MouseEnter" Foreground="#2ecc71" Cursor="ArrowCD" Focusable="False"/>
-                            <Button Margin="10, 15" x:Name="Creditsbutton" Width="165" Content="CREDITS" Click="refer__showcredits" MouseEnter="menu_MouseEnter" Focusable="False" Cursor="Hand"/>
-                            <Button Margin="10, 10" x:Name="Exitbutton" Width="165" Content="EXIT?" Click="refer__exit" MouseEnter="menu_MouseEnter" Cursor="No" Focusable="False"/>
+                            <Button Margin="10, 10" x:Name="Newgamebutton" Width="165" Content="NEW GAME" Click="refer__newgame" MouseEnter="menu_MouseEnter" Focusable="False" Cursor="ArrowCD" Foreground="#2ecc71"/>
+                            <Button Margin="10, 15" x:Name="Creditsbutton" Width="165" Content="CREDITS" Click="refer__showcredits" MouseEnter="menu_MouseEnter" Focusable="False"/>
+                            <Button Margin="10, 10" x:Name="Exitbutton" Width="165" Content="EXIT?" Click="refer__exit" MouseEnter="menu_MouseEnter" Focusable="False" Cursor="No"/>
                         </StackPanel>
                         <Image Source="menu.png" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Grid.RowSpan="2"/>
                     </Grid>
@@ -147,7 +146,7 @@
                                 <CheckBox x:Name="timer_checker" Margin="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Content="Stata" Width="93" Click="refer__timelocker" Cursor="Hand"/>
                                 <CheckBox x:Name="music_checker" Margin="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Content="Music" Width="93" Click="refer__musicplayer" Cursor="Hand"/>
                             </StackPanel>
-                            <Button x:Name="fullscreen" Height="40" Width="165" Content="Fullscreen" Grid.Row="5" Click="refer__fullscreen"/>
+                            <Button x:Name="fullscreen" Height="40" Width="165" Content="Fullscreen" Grid.Row="5" MouseEnter="menu_MouseEnter" Click="refer__fullscreen"/>
                         </Grid>
                     </Grid>
                 </TabItem.Content>

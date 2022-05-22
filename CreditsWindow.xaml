@@ -15,11 +15,8 @@
             <Setter Property="Foreground" Value="#2ecc71"/>
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
         </Style>
-        <Style TargetType="GroupBox">
-            <Setter Property="FontFamily" Value="Lucida Console"/>
-            <Setter Property="Foreground" Value="#2ecc71"/>
-            <Setter Property="BorderThickness" Value="0.5"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
+        <Style TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
     </Window.Resources>
@@ -61,10 +58,11 @@
             <Line X1="22" Y1="17" X2="133" Y2="33" Stroke="#2ecc71" StrokeThickness="1"/>
             <Line X1="245" Y1="17" X2="133" Y2="33"  Stroke="#2ecc71" StrokeThickness="1"/>
         </Canvas>
-        <StackPanel x:Name="secret" Height="127" Background="#2ecc71" HorizontalAlignment="Center" VerticalAlignment="Top" Width="222"  Grid.Row="0" Grid.Column="3" Margin="0,-130,0,0">
+        <StackPanel x:Name="secret" Height="127" Background="#2ecc71" HorizontalAlignment="Center" VerticalAlignment="Top" Width="222" Grid.Row="0" Grid.Column="3" Margin="0,-130,0,0">
             <Label Foreground="#0f151b" HorizontalContentAlignment="Center" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Width="267" Grid.Row="0" Grid.Column="3" Margin="0, 20,0,0">Прочие Участники</Label>
             <Label Foreground="#0f151b" HorizontalContentAlignment="Center" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Top" Width="267" Grid.Row="0" Grid.Column="3" Margin="0, 5,0,0">Николай Сергеевич</Label>
             <Label Foreground="#0f151b" HorizontalContentAlignment="Center" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Top" Width="267" Grid.Row="0" Grid.Column="3" Margin="0, 5,0,0">Владислав Лебедев</Label>
+            <Button Cursor="No" Width="222" Height="127" Opacity="0" Click="spec__up"  Margin="0,-130,0,0"></Button>
         </StackPanel>
         <Canvas VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30, 20" Grid.Column="2" Grid.Row="0" Width="60" Height="60">
             <Ellipse Width="60" Height="60">
@@ -72,7 +70,7 @@
                     <ImageBrush ImageSource="/yut_icon.png" Stretch="UniformToFill"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__artemYouTube"></Button>
+            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__artemYouTube" MouseEnter="audioforsite"></Button>
         </Canvas>
         <Canvas  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20, 23" Grid.Column="1" Grid.Row="1" Width="60" Height="60">
             <Ellipse Width="60" Height="60">
@@ -80,7 +78,7 @@
                     <ImageBrush ImageSource="disc_icon.png" Stretch="UniformToFill"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__yuriyDiscord"></Button>
+            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__yuriyDiscord" MouseEnter="audioforsite"></Button>
         </Canvas>
         <Canvas VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30, 20" Grid.Column="2" Grid.Row="2" Width="60" Height="60">
             <Ellipse Width="60" Height="60">
@@ -88,7 +86,7 @@
                     <ImageBrush ImageSource="/vk_icon.png" Stretch="UniformToFill"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__yarikVK"></Button>            
+            <Button Cursor="Help" Width="60" Height="60" Opacity="0" Click="site__yarikVK" MouseEnter="audioforsite"></Button>            
         </Canvas>
     </Grid>
 </Window>

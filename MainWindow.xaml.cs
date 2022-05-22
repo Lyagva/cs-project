@@ -2,19 +2,20 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Threading.Tasks;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 using System.Diagnostics;
+using Microsoft.Win32;
 using Customtimer;
 
 namespace intruder
@@ -52,6 +53,8 @@ namespace intruder
         private static MediaPlayer _backgroundMusic = new MediaPlayer();
         MediaPlayer menusound = new MediaPlayer();
         MediaPlayer confimsound = new MediaPlayer();
+        //MediaPlayer clicksound = new MediaPlayer();
+        //MediaPlayer theend = new MediaPlayer();
 
         // секундомер
         string currentTime = string.Empty;
@@ -67,14 +70,14 @@ namespace intruder
 
             menusound.Open(new Uri("music/menu_hover.mp3", UriKind.Relative));
             confimsound.Open(new Uri("music/settings_set.mp3", UriKind.Relative));
+            //clicksound.Open(new Uri("music/newgame_click.mp3", UriKind.Relative));
+            //theend.Open(new Uri("music/close_app.mp3", UriKind.Relative));
 
             SpecTimer.Interval = new TimeSpan(0, 0, 1);
             SpecTimer.Tick += Timer_Tick;
 
             loadState();
         }
-
-
 
         // <--- Maincast styles --->
         /// <summary>
@@ -225,24 +228,6 @@ namespace intruder
             this.Close();
         }
 
-        // borders` fix of GroupBox
-        private void screen__fix(bool arg)
-        {
-            /*
-            Style newstyle = new Style { TargetType = typeof(GroupBox) };
-            if (arg)
-            {
-                newstyle.Setters.Add(new Setter(BorderThicknessProperty, new Thickness(1)));
-            }
-            else
-            {
-                newstyle.Setters.Add(new Setter(BorderThicknessProperty, new Thickness(0.8)));
-                
-            }
-            Application.Current.Resources["_GB_style"] = newstyle;
-            */
-        }
-
         //  <--- Settings tab comands and func(s) --->
 
         // Settings tab - buttons & sliders
@@ -308,16 +293,14 @@ namespace intruder
             if (WindowState == WindowState.Normal)
             {
                 settings["fullscreenEnabled"] = "true";
-                WindowState = WindowState.Maximized;
                 WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
                 fullscreen.Content = "Windowed";
                 settings_left_grid.RowDefinitions[0].Height = new GridLength(3, GridUnitType.Star);
                 settings_left_grid.RowDefinitions[4].Height = new GridLength(3, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[0].Height = new GridLength(3, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[6].Height = new GridLength(3, GridUnitType.Star);
                 Application.Current.MainWindow.FontSize *= FontSizeMult;
-
-                screen__fix(true);
             }
             else
             {
@@ -330,8 +313,6 @@ namespace intruder
                 settings_right_grid.RowDefinitions[0].Height = new GridLength(0.5, GridUnitType.Star);
                 settings_right_grid.RowDefinitions[6].Height = new GridLength(0.5, GridUnitType.Star);
                 Application.Current.MainWindow.FontSize /= FontSizeMult;
-
-                screen__fix(false);
             }
             confim_MouseClick();
         }
@@ -389,7 +370,7 @@ namespace intruder
 
             // установка времени
             clocktxtblock.Content = Convert.ToString(settings["totalSpendTime"]);
-            String[] paths = settings["totalSpendTime"].Split(':');
+            string[] paths = settings["totalSpendTime"].Split(':');
             Int64 arg = Convert.ToInt64(paths[0]) * 3600 + Convert.ToInt64(paths[1]) * 60 + Convert.ToInt64(paths[2]);
             TotalStopWatcher.setSeconds(arg);
 
@@ -510,6 +491,14 @@ namespace intruder
                 return "";
             }
 
+            // ======== Sound ========
+            if (new[] { "sound", "change track" }.Contains(command))
+            {
+                operateCommandPick();
+                _backgroundMusic.Play();
+                return "";
+            }
+
             return "Command not found";
         }
         public string operateCommandSettings(List<string> args)
@@ -620,9 +609,9 @@ namespace intruder
                 string id = settings["id"];
                 settings = new Dictionary<string, string>()
                 {
-                    ["volume"] = "50",
+                    ["volume"] = "30",
                     ["fontSize"] = "18",
-                    ["timeLock"] = "00:00:02",
+                    ["totalSpendTime"] = "00:00:00",
                     ["timerEnabled"] = "false",
                     ["musicEnabled"] = "true",
                     ["fullscreenEnabled"] = "false",
@@ -666,6 +655,34 @@ namespace intruder
 
             return "";
         }
+        public string operateCommandPick()
+        {
+            Stream checkStream = null;
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Supported File Types (*.mp3, *.wav, *.mpeg, *.wmv, *.avi) | *.mp3; *.wav; *.mpeg; *.wmv; *.avi";
+            // Show open file dialog box 
+            if ((bool)dlg.ShowDialog())
+            {
+                _backgroundMusic.Pause();
+                try
+                {
+                    // check if something is selected
+                    if ((checkStream = dlg.OpenFile()) != null)
+                    {
+                        _backgroundMusic.Open(new Uri(dlg.FileName));
+                        return "Success! Music changed to: " + dlg.FileName + ". The mood-system is disabled";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    return "Error: Could not read file from disk. Original error: " + ex.Message;
+                }
+            }
+
+            return "";
+        }
+
         // Обработчик нажатий
         private void window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -698,10 +715,7 @@ namespace intruder
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             settings["totalSpendTime"] = Convert.ToString(clocktxtblock.Content);
-            //settings["totalSpendTime"] = currentTime;
             saveState();
         }
-
-        
     }
 }
